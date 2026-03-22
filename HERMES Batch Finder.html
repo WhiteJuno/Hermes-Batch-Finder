@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hermes Batch Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --input-bg: #f8fafc;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-premium: 0 20px 40px -10px rgba(37, 99, 235, 0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --bg-icon-invert: 0;
+            --gradient-text: linear-gradient(135deg, #1e3a8a, #3b82f6);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0c0c0d;
+            --nav-bg: rgba(24, 24, 27, 0.9);
+            --card-bg: #1e1e24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #27272a;
+            --border-hover: #3f3f46;
+            --accent-color: #3b82f6; 
+            --accent-hover: #60a5fa;
+            --accent-light: #1e293b;
+            --input-bg: #1e1e24;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-premium: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            --bg-icon-invert: 1;
+            --gradient-text: linear-gradient(135deg, #60a5fa, #93c5fd);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='180' viewBox='0 0 360 180' stroke='%230f172a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cg transform='translate(45, 45)'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/g%3E%3Cg transform='translate(135, 45)'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/%3E%3Cpolyline points='14 2 14 8 20 8'/%3E%3C/g%3E%3Cg transform='translate(225, 45)'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='2' y1='12' x2='22' y2='12'/%3E%3Cpath d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'/%3E%3C/g%3E%3Cg transform='translate(315, 45)'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/%3E%3C/g%3E%3Cg transform='translate(45, 135)'%3E%3Cpath d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'/%3E%3Cpath d='M13 13l6 6'/%3E%3C/g%3E%3Cg transform='translate(135, 135)'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/g%3E%3Cg transform='translate(225, 135)'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' ry='2'/%3E%3Cline x1='8' y1='21' x2='16' y2='21'/%3E%3Cline x1='12' y1='17' x2='12' y2='21'/%3E%3C/g%3E%3Cg transform='translate(315, 135)'%3E%3Cpath d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 560px 280px;
+            opacity: 0.08;
+            transform: rotate(15deg);
+            animation: bgPan 60s linear infinite, bgFadeIn 2s ease-out forwards;
+            pointer-events: none;
+            transition: filter 0.3s ease;
+        }
+
+        [data-theme="dark"] body::before {
+            filter: invert(1);
+        }
+
+        @keyframes bgFadeIn {
+            0% { opacity: 0; transform: rotate(15deg) scale(1.1); }
+            100% { opacity: 0.08; transform: rotate(15deg) scale(1); }
+        }
+
+        @keyframes bgPan {
+            0% { background-position: 0 0; }
+            100% { background-position: 1120px -560px; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: var(--nav-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        nav button {
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            background: var(--accent-light);
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+        }
+
+        nav button:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .hero-text h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 32px;
+            border-radius: calc(var(--radius) + 8px);
+            width: 100%;
+            box-shadow: var(--shadow-premium);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            animation: scaleIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .search-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-row>* {
+            flex: 1;
+        }
+
+        .search-row .client-select {
+            flex: 0 0 200px;
+        }
+
+        .search-row .search-btn {
+            flex: 0 0 140px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        select:hover,
+        input:hover {
+            border-color: var(--border-hover);
+            background: var(--card-bg);
+        }
+
+        select:focus,
+        input:focus {
+            border-color: var(--accent-color);
+            background: var(--card-bg);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .action-btn {
+            height: 52px;
+            margin-top: 22px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: var(--bg-color);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            transition: all 0.3s ease;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            background: var(--card-bg);
+        }
+
+        .result-card h3 {
+            margin: 0 0 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .result-card p {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Documents Modal / Expandable Section */
+        .documents-wrapper {
+            width: 100%;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .documents-wrapper.show {
+            grid-template-rows: 1fr;
+        }
+
+        .documents-section {
+            overflow: hidden;
+        }
+
+        .documents-inner {
+            padding: 32px;
+            background: var(--card-bg);
+            border-radius: calc(var(--radius) + 8px);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-top: 10px;
+        }
+
+        .docs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .docs-header h2 {
+            color: var(--text-main);
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .doc-card {
+            background: var(--bg-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .doc-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-sm);
+            background: var(--card-bg);
+        }
+
+        .doc-card h4 {
+            margin: 0 0 16px;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-pending {
+            background: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+        }
+
+        .dot-insufficient {
+            background: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+
+        .dot-refer {
+            background: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .doc-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .doc-card label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px 0;
+        }
+
+        .doc-card label:hover {
+            color: var(--text-main);
+        }
+
+        /* Custom Checkbox */
+        .doc-card input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-hover);
+            border-radius: 6px;
+            margin: 0 12px 0 0;
+            display: grid;
+            place-content: center;
+            background: var(--card-bg);
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .doc-card input[type="checkbox"]::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            transform: scale(0);
+            transition: 120ms transform cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 1em 1em #ffffff;
+            background-color: transparent;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+
+        .doc-card input[type="checkbox"]:hover {
+            border-color: var(--accent-color);
+        }
+
+        .doc-card input[type="checkbox"]:checked {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .doc-card input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+
+        .note {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 24px;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Non Immediate Family Grid (Compact) */
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .list-column {
+            background: var(--bg-color);
+            border-radius: var(--radius);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .list-column h3 {
+            margin: 0 0 12px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .title-applies {
+            color: #16a34a;
+            border-bottom-color: #16a34a !important;
+        }
+
+        .title-not-applies {
+            color: #dc2626;
+            border-bottom-color: #dc2626 !important;
+        }
+
+        .title-exceptions {
+            color: #ca8a04;
+            border-bottom-color: #ca8a04 !important;
+        }
+
+        .list-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .list-column li {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.3;
+        }
+
+        .list-column li::before {
+            content: "•";
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-row .client-select,
+            .search-row .search-btn {
+                flex: auto;
+                width: 100%;
+            }
+
+            .action-btn {
+                margin-top: 8px;
+            }
+
+            nav {
+                padding: 16px 20px;
+            }
+
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Inactivity Autocomplete & Grid */
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-md);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 10;
+            margin-top: 4px;
+        }
+
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .autocomplete-item:hover,
+        .autocomplete-item.active {
+            background: var(--bg-color);
+        }
+
+        .country-result-card {
+            background: var(--accent-light);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            animation: slideUp 0.3s ease forwards;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .country-result-card h3 {
+            margin: 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .country-result-card p {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .countries-grid {
+            column-width: 200px;
+            column-count: 3;
+            column-gap: 12px;
+            margin-top: 12px;
+        }
+
+        .country-list-item {
+            font-size: 13px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: var(--input-bg);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 8px;
+        }
+
+        .does-not-apply {
+            color: #ef4444 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h1>GFCSU | Hermes</h1>
+        <div class="buttons">
+            <button onclick="toggleDocuments()">
+                <svg style="vertical-align: middle; margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Documents
+            </button>
+            <button onclick="toggleNonImmediate()">
+                <svg style="vertical-align: middle; margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Non Immediate
+            </button>
+            <button onclick="toggleInactivity()">
+                <svg style="vertical-align: middle; margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" width="16"
+                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path
+                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                    </path>
+                </svg>
+                Inactivity
+            </button>
+            <button id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode" style="padding: 10px; width: 40px; height: 40px; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-text">
+            <h2>Batch Finder</h2>
+            <p>Goodbye to Holding Queue opportunities.</p>
+        </div>
+
+        <div class="card">
+            <div class="search-row">
+                <div class="input-group client-select">
+                    <label for="clientId">Client ID</label>
+                    <select id="clientId">
+                        <option value="" disabled selected>Select Client ID</option>
+                        <option value="EMEA">EMEA</option>
+                        <option value="USCD">USCD</option>
+                        <option value="JAPA">JAPA</option>
+                        <option value="LAC">LAC</option>
+                        <option value="CANADA">CANADA</option>
+                        <option value="TLS">TLS</option>
+                        <option value="CSO">CSO</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="batch">Batch</label>
+                    <input id="batch" placeholder="Paste or type Batch here..." autocomplete="off">
+                </div>
+
+                <button class="action-btn search-btn" onclick="searchBatch()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    Search
+                </button>
+            </div>
+
+            <div id="results" class="results"></div>
+        </div>
+
+        <div id="documentsWrapper" class="documents-wrapper">
+            <div class="documents-section">
+                <div class="documents-inner">
+                    <div class="docs-header">
+                        <h2>Documents to Attach</h2>
+                        <button class="close-btn" title="Close" onclick="toggleDocuments()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="documents-grid">
+                        <div class="doc-card">
+                            <h4><span class="status-dot dot-pending"></span> Pending</h4>
+                            <ul>
+                                <li><label><input type="checkbox"> Internal Records</label></li>
+                                <li><label><input type="checkbox"> Griffin (N/A Aggregator)</label></li>
+                                <li><label><input type="checkbox"> Dow Jones or Lexis Nexis</label></li>
+                                <li><label><input type="checkbox"> External Research - Customer</label></li>
+                                <li><label><input type="checkbox"> LN Find a Person/Business*</label></li>
+                            </ul>
+                        </div>
+                        <div class="doc-card">
+                            <h4><span class="status-dot dot-insufficient"></span> Insufficient</h4>
+                            <ul>
+                                <li><label><input type="checkbox"> Internal Records</label></li>
+                                <li><label><input type="checkbox"> Griffin (N/A Aggregator)</label></li>
+                                <li><label><input type="checkbox"> Dow Jones or Lexis Nexis</label></li>
+                                <li><label><input type="checkbox"> External Research - Customer</label></li>
+                                <li><label><input type="checkbox"> External Research - WLP</label></li>
+                                <li><label><input type="checkbox"> LN Find a Person/Business*</label></li>
+                            </ul>
+                        </div>
+                        <div class="doc-card">
+                            <h4><span class="status-dot dot-refer"></span> Refer to Compliance</h4>
+                            <ul>
+                                <li><label><input type="checkbox"> Internal Records</label></li>
+                                <li><label><input type="checkbox"> Griffin (N/A Aggregator)</label></li>
+                                <li><label><input type="checkbox"> Dow Jones or Lexis Nexis</label></li>
+                                <li><label><input type="checkbox"> External Research - Customer</label></li>
+                                <li><label><input type="checkbox"> External Research - WLP</label></li>
+                                <li><label><input type="checkbox"> LN World Compliance - WLP</label></li>
+                                <li><label><input type="checkbox"> LN Find a Person/Business*</label></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span><strong>* Note:</strong> You can use Lexis Nexis as an external resource, no matter the
+                            location or the Client ID.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non Immediate Family Wrapper -->
+        <div id="nonImmediateWrapper" class="documents-wrapper">
+            <div class="documents-section">
+                <div class="documents-inner">
+                    <div class="docs-header">
+                        <h2>Non Immediate Family Member</h2>
+                        <button class="close-btn" title="Close" onclick="toggleNonImmediate()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="modal-grid">
+                        <div class="list-column">
+                            <h3 class="title-applies">Applies</h3>
+                            <ul>
+                                <li>Grandfather</li>
+                                <li>Grandmother</li>
+                                <li>Grandparents</li>
+                                <li>Grandchildren</li>
+                                <li>Grandson</li>
+                                <li>Granddaughter</li>
+                                <li>Uncle</li>
+                                <li>Aunt</li>
+                                <li>Cousin</li>
+                                <li>Niece</li>
+                                <li>Sister-in-Law</li>
+                                <li>Brother-in-law</li>
+                            </ul>
+                        </div>
+
+                        <div class="list-column">
+                            <h3 class="title-not-applies">Not Applies</h3>
+                            <ul>
+                                <li>Father</li>
+                                <li>Mother</li>
+                                <li>Brother</li>
+                                <li>Sister</li>
+                                <li>Wife</li>
+                                <li>Husband</li>
+                                <li>Unmarried Partner</li>
+                                <li>Mother-in-law</li>
+                                <li>Father-in-law</li>
+                                <li>Daughter-in-law</li>
+                                <li>Son-in-law</li>
+                                <li>Stepfather</li>
+                                <li>Stepmother</li>
+                                <li>Stepson</li>
+                                <li>Stepdaughter</li>
+                                <li>Stepsister</li>
+                                <li>Stepbrother</li>
+                                <li>Half-brother</li>
+                                <li>Half-sister</li>
+                                <li>Child</li>
+                                <li>Other relationship:</li>
+                                <li>Friend</li>
+                                <li>Colleague</li>
+                                <li>Employer</li>
+                                <li>Ex-employer</li>
+                            </ul>
+                        </div>
+
+                        <div class="list-column">
+                            <h3 class="title-exceptions">Exceptions</h3>
+                            <ul>
+                                <li>None of this criteria applies for Italy 🇮🇹.</li>
+                                <li>This Criteria does not apply for SIP’s and RCA of SIP’s.</li>
+                                <li>This Criteria does not apply if there are Sanctions Concerns.</li>
+                                <li>It can be applied to all EX’s, except EX-employer.</li>
+                                <li>Sister-in-law & Brother in law does not apply for France 🇫🇷, Taiwan 🇹🇼 &
+                                    Argentina 🇦🇷.</li>
+                                <li>Grandparent, Grandmother, Grandson & Granddaughter does not apply for Argentina
+                                    🇦🇷.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inactivity Wrapper -->
+        <div id="inactivityWrapper" class="documents-wrapper">
+            <div class="documents-section">
+                <div class="documents-inner">
+                    <div class="docs-header">
+                        <h2>PEP’s & RCA’s Inactivity Criteria</h2>
+                        <button class="close-btn" title="Close" onclick="toggleInactivity()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="inactivity-search-container" style="position: relative; margin-bottom: 20px;">
+                        <div class="input-group">
+                            <label for="countrySearch">Search Country</label>
+                            <input type="text" id="countrySearch" placeholder="Type a country name..."
+                                autocomplete="off" oninput="handleCountrySearch(event)"
+                                onkeydown="handleCountryKeydown(event)">
+                            <div id="countryAutocomplete" class="autocomplete-dropdown" style="display: none;"></div>
+                        </div>
+                        <div id="countryResult" class="country-result-card" style="display: none; margin-top: 12px;">
+                        </div>
+                    </div>
+
+                    <div class="modal-grid" style="grid-template-columns: 1fr;">
+                        <div class="list-column">
+                            <h3>All Countries</h3>
+                            <div id="countriesGrid" class="countries-grid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer
+            style="text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 40px; margin-bottom: 20px; line-height: 1.6;">
+            <p style="margin: 0;">Hermes is a tool exclusively designed and intended for internal use at American
+                Express.</p>
+            <p style="margin: 0;">Software Engineer: Esmeralda Monroy. | Project Developers: Gerardo Raya, Martha
+                Bárcenas.</p>
+            <p style="margin: 0;">2026 GFCSU México | American Express</p>
+        </footer>
+    </div>
+
+    <script>
+        const database = [
+            ["EMEA", "BE_INTL_GMS_MCCY-Payfac_Sanctions", "Refer to GSG", "Administrator"],
+            ["LAC", "BATCH_123", "SPM Example", "Pending"],
+            ["USCD", "BATCH_456", "Another SPM", "Insufficient"]
+        ];
+
+        document.getElementById("batch").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                searchBatch();
+            }
+        });
+
+        function searchBatch() {
+            const client = document.getElementById("clientId").value.trim().toUpperCase();
+            const batch = document.getElementById("batch").value.trim();
+            const resultsContainer = document.getElementById("results");
+
+            resultsContainer.innerHTML = "";
+
+            if (!client || !batch) {
+                resultsContainer.innerHTML = `
+                <div class='result-card' style='border-left-color: #ef4444;'>
+                    <h3 style='color: #ef4444;'>Validation Error</h3>
+                    <p style='font-size: 15px;'>Please select a Region and enter a Batch ID to search.</p>
+                </div>`;
+                return;
+            }
+
+            const matched = database.filter(row =>
+                row[0].toUpperCase() === client &&
+                row[1].toLowerCase() === batch.toLowerCase()
+            );
+
+            if (matched.length === 0) {
+                resultsContainer.innerHTML = `
+                <div class='result-card' style='border-left-color: #f59e0b;'>
+                    <h3 style='color: #d97706;'>Batch Not Found</h3>
+                    <p style='font-size: 15px; font-weight: 500;'>Batch not found, please contact your Team Leader. We're currently working on this!</p>
+                </div>`;
+                return;
+            }
+
+            matched.forEach(row => {
+                // SPM section
+                const spmCard = document.createElement("div");
+                spmCard.className = "result-card";
+                spmCard.innerHTML = `
+                <h3>Strong Potential Match</h3>
+                <p>${row[2]}</p>
+            `;
+                resultsContainer.appendChild(spmCard);
+
+                // Pending / Insufficient Status
+                const statusCard = document.createElement("div");
+                statusCard.className = "result-card";
+
+                let statusColor = "var(--accent-color)";
+                if (row[3].toLowerCase() === "pending") statusColor = "#eab308";
+                if (row[3].toLowerCase() === "insufficient") statusColor = "#ef4444";
+
+                statusCard.style.borderLeftColor = statusColor;
+                statusCard.innerHTML = `
+                <h3 style="color: ${statusColor}">Pending / Insufficient</h3>
+                <p>${row[3]}</p>
+            `;
+                resultsContainer.appendChild(statusCard);
+            });
+        }
+
+        function toggleDocuments() {
+            const wrapper = document.getElementById("documentsWrapper");
+            const isShowing = wrapper.classList.contains("show");
+
+            if (isShowing) {
+                // Hide section: uncheck all checkboxes
+                const checkboxes = wrapper.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+            }
+
+            wrapper.classList.toggle("show");
+
+            if (!isShowing) {
+                // Smoothly scroll down
+                setTimeout(() => {
+                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+
+        function toggleNonImmediate() {
+            const wrapper = document.getElementById("nonImmediateWrapper");
+            const isShowing = wrapper.classList.contains("show");
+
+            wrapper.classList.toggle("show");
+
+            if (!isShowing) {
+                setTimeout(() => {
+                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+
+        function toggleInactivity() {
+            const wrapper = document.getElementById("inactivityWrapper");
+            const isShowing = wrapper.classList.contains("show");
+
+            wrapper.classList.toggle("show");
+
+            if (!isShowing) {
+                setTimeout(() => {
+                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    document.getElementById("countrySearch").focus();
+                }, 100);
+            }
+        }
+
+        const inactivityDb = [
+            { name: "United States", period: "1 year", flag: "🇺🇸" },
+            { name: "Australia", period: "1 year", flag: "🇦🇺" },
+            { name: "Hong Kong", period: "1 year", flag: "🇭🇰" },
+            { name: "India", period: "Does not apply.", flag: "🇮🇳" },
+            { name: "Japan", period: "Does not apply.", flag: "🇯🇵" },
+            { name: "New Zealand", period: "1 year", flag: "🇳🇿" },
+            { name: "Singapore", period: "Does not apply.", flag: "🇸🇬" },
+            { name: "Taiwan", period: "Does not apply.", flag: "🇹🇼" },
+            { name: "Thailand", period: "Does not apply.", flag: "🇹🇭" },
+            { name: "Austria", period: "1 year", flag: "🇦🇹" },
+            { name: "Belgium", period: "1 year", flag: "🇧🇪" },
+            { name: "Luxemburg", period: "1 year", flag: "🇱🇺" },
+            { name: "Bulgaria", period: "2 years", flag: "🇧🇬" },
+            { name: "Croatia", period: "2 years", flag: "🇭🇷" },
+            { name: "Cyprus", period: "2 years", flag: "🇨🇾" },
+            { name: "Czech Republic", period: "2 years", flag: "🇨🇿" },
+            { name: "Denmark", period: "2 years", flag: "🇩🇰" },
+            { name: "E1 International Europe Card", period: "2 years", flag: "🇪🇺" },
+            { name: "Estonia", period: "2 years", flag: "🇪🇪" },
+            { name: "Finland", period: "2 years", flag: "🇫🇮" },
+            { name: "France", period: "1 year", flag: "🇫🇷" },
+            { name: "Germany", period: "1 year", flag: "🇩🇪" },
+            { name: "Greece", period: "2 years", flag: "🇬🇷" },
+            { name: "Hungary", period: "2 years", flag: "🇭🇺" },
+            { name: "ICC", period: "1 year", flag: "🌐" },
+            { name: "Ireland", period: "2 years", flag: "🇮🇪" },
+            { name: "Iceland", period: "2 years", flag: "🇮🇸" },
+            { name: "Italy", period: "1 year", flag: "🇮🇹" },
+            { name: "Latvia", period: "2 years", flag: "🇱🇻" },
+            { name: "Lithuania", period: "2 years", flag: "🇱🇹" },
+            { name: "Netherlands", period: "1 year", flag: "🇳🇱" },
+            { name: "Norway", period: "2 years", flag: "🇳🇴" },
+            { name: "Poland", period: "2 years", flag: "🇵🇱" },
+            { name: "Portugal", period: "2 years", flag: "🇵🇹" },
+            { name: "Romania", period: "2 years", flag: "🇷🇴" },
+            { name: "Russia", period: "1 year", flag: "🇷🇺" },
+            { name: "Slovakia", period: "2 years", flag: "🇸🇰" },
+            { name: "Slovenia", period: "2 years", flag: "🇸🇮" },
+            { name: "Spain", period: "2 years", flag: "🇪🇸" },
+            { name: "Sweden", period: "2 years", flag: "🇸🇪" },
+            { name: "Switzerland", period: "1 year", flag: "🇨🇭" },
+            { name: "UK", period: "1 year", flag: "🇬🇧" },
+            { name: "X2 (MCCY)", period: "2 years", flag: "🌐" },
+            { name: "Argentina", period: "Does not apply.", flag: "🇦🇷" },
+            { name: "Canada", period: "Does not apply.", flag: "🇨🇦" },
+            { name: "Mexico", period: "2 years", flag: "🇲🇽" }
+        ];
+
+        inactivityDb.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        let currentFocus = -1;
+
+        function handleCountrySearch(e) {
+            const val = e.target.value;
+            const dropdown = document.getElementById("countryAutocomplete");
+            const resultCard = document.getElementById("countryResult");
+            dropdown.innerHTML = "";
+            currentFocus = -1;
+
+            if (!val) {
+                dropdown.style.display = "none";
+                resultCard.style.display = "none";
+                return;
+            }
+
+            const matches = inactivityDb.filter(c => c.name.toLowerCase().includes(val.toLowerCase()) || c.flag.includes(val));
+
+            if (matches.length > 0) {
+                dropdown.style.display = "block";
+                matches.forEach((c) => {
+                    const item = document.createElement("div");
+                    item.className = "autocomplete-item";
+
+                    const regex = new RegExp("(" + val + ")", "gi");
+                    item.innerHTML = "<span>" + c.flag + "</span> " + c.name.replace(regex, "<strong>$1</strong>");
+
+                    item.addEventListener("click", function () {
+                        selectCountry(c);
+                    });
+                    dropdown.appendChild(item);
+                });
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        function handleCountryKeydown(e) {
+            const dropdown = document.getElementById("countryAutocomplete");
+            if (dropdown.style.display === "none") return;
+            const items = dropdown.getElementsByClassName("autocomplete-item");
+            if (e.key === "ArrowDown") {
+                currentFocus++;
+                addActive(items);
+            } else if (e.key === "ArrowUp") {
+                currentFocus--;
+                addActive(items);
+            } else if (e.key === "Enter" || e.key === "Tab") {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (items[currentFocus]) items[currentFocus].click();
+                } else if (items.length > 0) {
+                    items[0].click();
+                }
+            }
+        }
+
+        function addActive(items) {
+            if (!items) return false;
+            removeActive(items);
+            if (currentFocus >= items.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (items.length - 1);
+            items[currentFocus].classList.add("active");
+            items[currentFocus].scrollIntoView({ block: "nearest" });
+        }
+
+        function removeActive(items) {
+            for (let i = 0; i < items.length; i++) {
+                items[i].classList.remove("active");
+            }
+        }
+
+        function selectCountry(country) {
+            const input = document.getElementById("countrySearch");
+            const dropdown = document.getElementById("countryAutocomplete");
+            const resultCard = document.getElementById("countryResult");
+
+            input.value = country.name;
+            dropdown.style.display = "none";
+
+            const isDna = country.period === "Does not apply.";
+            resultCard.style.display = "flex";
+            resultCard.innerHTML = "<h3>" + country.flag + " " + country.name + "</h3>" +
+                "<p class='" + (isDna ? "does-not-apply" : "") + "'>" + country.period + "</p>";
+        }
+
+        document.addEventListener("click", function (e) {
+            if (e.target.id !== "countrySearch") {
+                const dropdown = document.getElementById("countryAutocomplete");
+                if (dropdown) dropdown.style.display = "none";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const grid = document.getElementById("countriesGrid");
+            if (!grid) return;
+            inactivityDb.forEach(c => {
+                const isDna = c.period === "Does not apply.";
+                grid.innerHTML += "<div class='country-list-item'>" +
+                    "<span>" + c.flag + " " + c.name + "</span>" +
+                    "<span class='" + (isDna ? "does-not-apply" : "") + "'>" + c.period + "</span>" +
+                    "</div>";
+            });
+        });
+
+        // Theme toggle logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        }
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+        initTheme();
+    </script>
+
+</body>
+
+</html>
