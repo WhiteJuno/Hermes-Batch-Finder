@@ -50,7 +50,7 @@ The search engine ONLY shows the results of the single batch that was selected a
 
 1.- Isolation: First, it grabs all batches belonging to the selected Client ID.
 2.- If there is an Exact Match, it picks that specific row and stops looking.
-3.- If there is no exact match (like most of the times), it calculates a "similarity score" for every batch under that Client ID and identifies        the single row with the highest score.
+3.- If there is no exact match (like most of the times), it calculates a "similarity score" for every batch under that Client ID and identifies       the single row with the highest score.
 4.- Display: Once it has that one "Selected" row (stored in the variable bestMatch), it looks only at that row's data.
     row[2] is mapped directly to the Strong Potential Match card.
     row[3] is mapped directly to the Pending / Insufficient card.
