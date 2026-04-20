@@ -1,5 +1,7 @@
 The search engine follows a strict "priority-based" selection process to find the single match.
 
+Use New_batch at 5:30PM FE_ATR_SE_Austria_on_99/12/15_Merchant Sanctions 817365813.dat     (EMEA)
+
 1.- Client ID Filter
     Before any matching happens, the tool ignores everything in the database that doesn't belong to the Client ID you selected (e.g., EMEA,           Canada). Th  is ensures a batch with the same name from a different region is never shown.
 
